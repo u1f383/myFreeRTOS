@@ -137,6 +137,8 @@ QueueHandle_t xPrintQueue;
 void task1(void *pvParameter);
 void task2(void *pvParameter);
 void task3(void *pvParameter);
+void task4(void *pvParameter);
+void task5(void *pvParameter);
 void vPrint(const char *pcMessage);
 
 /*-----------------------------------------------------------*/
@@ -147,15 +149,14 @@ int main( void )
 	prvSetupHardware();
 
 	/* Start the tasks defined within the file. */
-	xTaskCreate( task1, "task1", configMINIMAL_STACK_SIZE, NULL, 5, NULL );
+	xTaskCreate( task1, "task1", configMINIMAL_STACK_SIZE, NULL, 4, NULL );
 	xTaskCreate( task2, "task2", configMINIMAL_STACK_SIZE, NULL, 1, NULL );
 	xTaskCreate( task3, "task3", configMINIMAL_STACK_SIZE, NULL, 1, NULL );
+	xTaskCreate( task4, "task4", configMINIMAL_STACK_SIZE, NULL, 1, NULL );
+	xTaskCreate( task5, "task5", configMINIMAL_STACK_SIZE, NULL, 1, NULL );
 
 	/* Start the scheduler. */
 	vTaskStartScheduler();
-
-	/* Will only get here if there was insufficient heap to start the
-	scheduler. */
 
 	return 0;
 }
@@ -199,6 +200,25 @@ void task3(void *pvParameter)
 	}
 }
 
+void task4(void *pvParameter)
+{
+	const char *t4 = "I'M T4!";
+	for( ;; )
+	{
+		vPrint(t4);
+		taskYIELD();
+	}
+}
+
+void task5(void *pvParameter)
+{
+	const char *t5 = "I'M T5!";
+	for( ;; )
+	{
+		vPrint(t5);
+		taskYIELD();
+	}
+}
 /*-----------------------------------------------------------*/
 static void vCheckTask( void *pvParameters )
 {
